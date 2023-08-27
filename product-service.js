@@ -1,8 +1,8 @@
 var product_list = []
 
-function isValid(product) {
-    if (findByID(product.id)) return false 
-    else return true
+function alreadyExists(productId) {
+    if (findByID(productId)) return true 
+    else return false
 }
 
 function findByID(productId) {
@@ -39,17 +39,23 @@ module.exports = {
         return findByID(productId)
     },
     addProduct: function(product) {
-        if(!isValid(product)) {
+        if(alreadyExists(product.id)) {
             return "Este produto já foi cadastrado !"
         }
         product_list.push(product)
         return "Produto cadastrado com sucesso !"
     },
     updateProduct: (productId, newProduct) => {
-        return updateProduct(productId, newProduct);
+        if(alreadyExists(productId)) {
+            return updateProduct(productId, newProduct);
+        }
+        return `Produto de ID ${productId} não encontrado`
     },
     deleteProduct: function(productId) {
-        return deleteById(productId);
+        if(alreadyExists(productId)) {
+            return deleteById(productId);
+        }
+        return `Produto de ID ${productId} não encontrado`
     }
 
 }
